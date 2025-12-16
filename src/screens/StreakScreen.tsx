@@ -1,27 +1,15 @@
 import React, { useMemo } from 'react';
-import {
-  Alert,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-  TextStyle,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { Alert, StatusBar, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './StreakScreen.styles';
+import StatCard from '../components/StatCard';
+import RewardRow, { RewardRowData } from '../components/RewardRow';
+import StatsDivider from '../components/StatsDivider';
+import PrimaryButton from '../components/PrimaryButton';
 
-type Reward = {
-  title: string;
-  subtitle: string;
-  amount: string;
-  badgeColors: string[];
-  rowColors: string[];
-  isHighlighted?: boolean;
-  isBlurredAmount?: boolean;
-};
+const STAT_CARD_COLORS = ['#1b3065', '#0f2453'] as const;
 
-const rewards: Reward[] = [
+const rewards: RewardRowData[] = [
   {
     title: 'Legendary Rewards',
     subtitle: 'Upgrade to earn',
@@ -63,7 +51,7 @@ const StreakScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
-      <StatusBar barStyle={safeStatusBarStyle}  backgroundColor="#151c3a" />
+      <StatusBar barStyle={safeStatusBarStyle} backgroundColor="#151c3a" />
       <View style={styles.card}>
         <Text style={styles.title}>22-day streak</Text>
         <Text style={styles.subtitle}>
@@ -74,30 +62,48 @@ const StreakScreen: React.FC = () => {
         </Text>
 
         <View style={styles.statsRow}>
-          <LinearGradient
-            colors={['#1b3065', '#0f2453']}
-            style={styles.statCard}>
-            <Text style={styles.statValue}>0%</Text>
-            <Text style={styles.statLabel}>Check-In rate</Text>
-          </LinearGradient>
+          <StatCard
+            value="0%"
+            label="Check-In rate"
+            gradientColors={STAT_CARD_COLORS as unknown as string[]}
+            containerStyle={styles.statCard}
+            valueStyle={styles.statValue}
+            labelStyle={styles.statLabel}
+          />
 
-          <View style={styles.statsCenter}>
-          
-            <Text style={styles.statsLabelCenter}>STATS</Text>
-            <View style={styles.statsDivider} />
-          </View>
+          <StatsDivider
+            label="STATS"
+            containerStyle={styles.statsCenter}
+            dividerStyle={styles.statsDivider}
+            labelStyle={styles.statsLabelCenter}
+          />
 
-          <LinearGradient
-            colors={['#1b3065', '#0f2453']}
-            style={styles.statCard}>
-            <Text style={[styles.statValue, styles.blueText]}>33</Text>
-            <Text style={styles.statLabel}>Longest streak</Text>
-          </LinearGradient>
+          <StatCard
+            value="33"
+            label="Longest streak"
+            gradientColors={STAT_CARD_COLORS as unknown as string[]}
+            containerStyle={styles.statCard}
+            valueStyle={[styles.statValue, styles.blueText]}
+            labelStyle={styles.statLabel}
+          />
         </View>
 
         <View style={styles.rewardsContainer}>
           {rewards.map(reward => (
-            <RewardRow key={reward.title} reward={reward} />
+            <RewardRow
+              key={reward.title}
+              data={reward}
+              containerStyle={styles.rewardRow}
+              highlightStyle={styles.rewardHighlight}
+              leftContainerStyle={styles.rewardLeft}
+              badgeStyle={styles.badge}
+              badgeIconStyle={styles.badgeIcon}
+              titleStyle={styles.rewardTitle}
+              subtitleStyle={styles.rewardSubtitle}
+              amountStyle={styles.rewardAmount}
+              amountBlurredStyle={styles.rewardAmountBlurred}
+              amountHighlightedStyle={styles.pinkText}
+            />
           ))}
         </View>
 
@@ -106,45 +112,14 @@ const StreakScreen: React.FC = () => {
           <Text style={styles.checkInTime}>00:00:00</Text>
         </View>
 
-        <TouchableOpacity
-          activeOpacity={0.9}
-          style={styles.button}
-          onPress={handleCheckIn}>
-          <Text style={styles.buttonText}>Check-In Now</Text>
-        </TouchableOpacity>
+        <PrimaryButton
+          label="Check-In Now"
+          onPress={handleCheckIn}
+          containerStyle={styles.button}
+          labelStyle={styles.buttonText}
+        />
       </View>
     </SafeAreaView>
-  );
-};
-
-type RewardRowProps = {
-  reward: Reward;
-};
-
-const RewardRow: React.FC<RewardRowProps> = ({ reward }) => {
-  const amountStyles: TextStyle[] = [styles.rewardAmount];
-  if (reward.isHighlighted) {
-    amountStyles.push(styles.pinkText);
-  }
-  if (reward.isBlurredAmount) {
-    amountStyles.push(styles.rewardAmountBlurred);
-  }
-
-  return (
-    <LinearGradient
-      colors={reward.rowColors}
-      style={[styles.rewardRow, reward.isHighlighted && styles.rewardHighlight]}>
-      <View style={styles.rewardLeft}>
-        <LinearGradient colors={reward.badgeColors} style={styles.badge}>
-          <Text style={styles.badgeIcon}>👑</Text>
-        </LinearGradient>
-        <View>
-          <Text style={styles.rewardTitle}>{reward.title}</Text>
-          <Text style={styles.rewardSubtitle}>{reward.subtitle}</Text>
-        </View>
-      </View>
-      <Text style={amountStyles}>{reward.amount}</Text>
-    </LinearGradient>
   );
 };
 
