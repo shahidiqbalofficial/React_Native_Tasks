@@ -1,10 +1,10 @@
 ## 📸 Screenshots
 <p align="center">
-  <img src="Screenshots.jpg" width="250" />
+  <img src="Screenshot.jpg" width="250" />
 </p>
 
 ## 🎥 Demo Video
-[![App Demo](Screenshots.jpg)](Demo.mp4)
+[![App Demo](Screenshot.jpg)](Demo video.mp4)
 
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
