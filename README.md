@@ -3,9 +3,6 @@
   <img src="Screenshot.jpg" width="250" />
 </p>
 
-## 🎥 Demo Video
-[![App Demo](Screenshot.jpg)](Demo video.mp4)
-
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
